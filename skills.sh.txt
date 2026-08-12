@@ -1,0 +1,2 @@
+Create AGENTS.md file in root of the project and mention the instruction in the file
+AI Agent will follow the AGENTS.md file instruction 
