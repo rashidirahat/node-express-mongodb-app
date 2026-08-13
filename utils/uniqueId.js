@@ -13,6 +13,11 @@ const generateStudentId = (length = 8) => {
   return result;
 };
 
+const generateTeacherId = () => {
+  return crypto.randomInt(10000000, 99999999).toString();
+};
+
 module.exports = {
-  generateStudentId
+  generateStudentId,
+  generateTeacherId
 };

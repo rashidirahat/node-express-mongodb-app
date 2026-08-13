@@ -27,6 +27,12 @@ const studentSchema = new mongoose.Schema(
         trim:true
     },
 
+    gender: {
+        type: String,
+        enum: ["male", "female"],
+        required: [true, "Gender is required"]
+    },
+
     guardianName: {
         type:String,
         required:[true, "Guardian name is required"],
