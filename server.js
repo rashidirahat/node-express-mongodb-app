@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./config/db");
 const studentRoutes = require("./routes/studentRoutes");
+const teacherRoutes = require("./routes/teacherRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const historyRoutes = require("./routes/historyRoutes");
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/students", studentRoutes);
+app.use("/api/v1/teachers", teacherRoutes);
 app.use("/api/v1/auth", authIpLimiter, authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/history", historyRoutes);

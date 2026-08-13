@@ -31,6 +31,7 @@ const studentPayload = {
   name: "John Doe",
   age: 15,
   address: "123 Main St",
+  gender: "male",
   guardianName: "Jane Doe",
   className: "Class 10",
   studentType: "day",
