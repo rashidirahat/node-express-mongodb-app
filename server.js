@@ -9,6 +9,7 @@ const teacherRoutes = require("./routes/teacherRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const historyRoutes = require("./routes/historyRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
 const { authIpLimiter } = require("./middleware/rateLimiters");
 const { errorHandler, notFound } = require("./middleware/errorHandler");
 
@@ -32,6 +33,7 @@ app.use("/api/v1/teachers", teacherRoutes);
 app.use("/api/v1/auth", authIpLimiter, authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/history", historyRoutes);
+app.use("/api/v1/expenses", expenseRoutes);
 
 // 404 + error handling (must be registered last)
 app.use(notFound);
