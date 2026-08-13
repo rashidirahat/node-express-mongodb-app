@@ -17,12 +17,12 @@ const historySchema = new mongoose.Schema(
     },
     action: {
       type: String,
-      enum: ["CREATE", "UPDATE", "DELETE", "ROLE_CHANGE"],
+      enum: ["CREATE", "UPDATE", "DELETE", "ROLE_CHANGE", "ADD_FUND", "SPEND_FUND"],
       required: true,
     },
     targetModel: {
       type: String,
-      enum: ["Student", "User", "Teacher"],
+      enum: ["Student", "User", "Teacher", "Expense"],
       required: true,
     },
     targetId: {
