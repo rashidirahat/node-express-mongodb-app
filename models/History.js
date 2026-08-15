@@ -22,7 +22,7 @@ const historySchema = new mongoose.Schema(
     },
     targetModel: {
       type: String,
-      enum: ["Student", "User", "Teacher", "Expense"],
+      enum: ["Student", "User", "Teacher", "Expense", "Donation"],
       required: true,
     },
     targetId: {
