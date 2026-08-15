@@ -2,6 +2,7 @@ const User = require("../models/User");
 const ApiError = require("../utils/ApiError");
 const { ROLES, ROLE_VALUES } = require("../config/roles");
 const { recordHistory } = require("../services/history.service");
+const { getDonationTotals } = require("../services/donation.service");
 
 // @desc    Get current authenticated user
 // @route   GET /api/v1/users/me
@@ -16,6 +17,10 @@ const getMe = async (req, res, next) => {
       });
     }
 
+    const lifetime = await getDonationTotals(req.user.userId);
+    const currentYear = new Date().getFullYear();
+    const yearTotals = await getDonationTotals(req.user.userId, currentYear);
+
     res.status(200).json({
       success: true,
       data: {
@@ -24,6 +29,14 @@ const getMe = async (req, res, next) => {
         email: user.email,
         role: user.role,
         isVerified: user.isVerified,
+        donations: {
+          zakat: lifetime.zakat,
+          sadaqah: lifetime.sadaqah,
+          total: lifetime.total,
+          year: currentYear,
+          yearZakat: yearTotals.zakat,
+          yearSadaqah: yearTotals.sadaqah,
+        },
       },
     });
   } catch (error) {
