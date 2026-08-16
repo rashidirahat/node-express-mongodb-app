@@ -1,5 +1,4 @@
 const Donation = require("../models/Donation");
-const { recordHistory } = require("../services/history.service");
 const { getDonationTotals } = require("../services/donation.service");
 
 const addDonation = async (req, res) => {
@@ -45,16 +44,6 @@ const addDonation = async (req, res) => {
       description,
     });
 
-    await recordHistory({
-      user: req.user,
-      action: "ADD_FUND",
-      targetModel: "Donation",
-      targetId: donation._id,
-      targetName: category === "zakat" ? "Zakat Donation" : "Sadaqah Donation",
-      description,
-      after: { amount, category, year },
-    });
-
     res.status(201).json({
       success: true,
       data: donation,
@@ -84,6 +73,7 @@ const getTotals = async (req, res) => {
     }
 
     const { zakat, sadaqah, total } = await getDonationTotals(req.user.userId, year);
+    const records = await Donation.find({ user: req.user.userId, year }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -92,6 +82,7 @@ const getTotals = async (req, res) => {
         zakat,
         sadaqah,
         total,
+        records,
       },
     });
   } catch (error) {

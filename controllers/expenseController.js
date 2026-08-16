@@ -110,7 +110,7 @@ const getTotal = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: { currentAmount: expense.currentAmount },
+      data: { currentAmount: expense.currentAmount, totalAdded: expense.totalAdded, totalSpent: expense.totalSpent},
     });
   } catch (error) {
     res.status(500).json({

@@ -1,6 +1,5 @@
 const { describe, it, before, after, beforeEach } = require("node:test");
 const assert = require("node:assert/strict");
-const History = require("../models/History");
 const Donation = require("../models/Donation");
 const { request, app, startDb, stopDb, clearDb, signupUser, getMe } = require("./helpers");
 
@@ -31,7 +30,7 @@ describe("Donation API", () => {
     await clearDb();
   });
 
-  it("POST /api/v1/donations by a regular user creates a zakat donation owned by the user and records ADD_FUND history", async () => {
+  it("POST /api/v1/donations by a regular user creates a zakat donation owned by the user", async () => {
     const { data } = await signupUser();
 
     const res = await addDonation(data.accessToken, {
@@ -48,12 +47,6 @@ describe("Donation API", () => {
     const donation = await Donation.findOne({ category: "zakat", amount: 5000 });
     assert.ok(donation);
     assert.equal(donation.user.toString(), data.user.id);
-
-    const h = await History.findOne({ action: "ADD_FUND" });
-    assert.ok(h);
-    assert.equal(h.action, "ADD_FUND");
-    assert.equal(h.targetModel, "Donation");
-    assert.equal(h.user.toString(), data.user.id);
   });
 
   it("POST rejects an invalid category with 400 VALIDATION_ERROR", async () => {
@@ -100,6 +93,11 @@ describe("Donation API", () => {
     assert.equal(resA.body.data.zakat, 5000);
     assert.equal(resA.body.data.sadaqah, 1000);
     assert.equal(resA.body.data.total, 6000);
+    assert.equal(resA.body.data.records.length, 2);
+    assert.deepEqual(
+      resA.body.data.records.map((r) => r.amount),
+      [1000, 5000]
+    );
 
     const resB = await getTotals(userB.data.accessToken);
     assert.equal(resB.status, 200);
@@ -108,6 +106,8 @@ describe("Donation API", () => {
     assert.equal(resB.body.data.zakat, 9999);
     assert.equal(resB.body.data.sadaqah, 0);
     assert.equal(resB.body.data.total, 9999);
+    assert.equal(resB.body.data.records.length, 1);
+    assert.equal(resB.body.data.records[0].amount, 9999);
   });
 
   it("GET totals honors ?year= filter", async () => {
@@ -128,6 +128,11 @@ describe("Donation API", () => {
     assert.equal(res.body.data.zakat, 9000);
     assert.equal(res.body.data.sadaqah, 500);
     assert.equal(res.body.data.total, 9500);
+    assert.equal(res.body.data.records.length, 2);
+    assert.deepEqual(
+      res.body.data.records.map((r) => r.amount),
+      [500, 9000]
+    );
   });
 
   it("GET totals returns zeros for a year with no donations", async () => {
@@ -140,6 +145,7 @@ describe("Donation API", () => {
     assert.equal(res.body.data.zakat, 0);
     assert.equal(res.body.data.sadaqah, 0);
     assert.equal(res.body.data.total, 0);
+    assert.equal(res.body.data.records.length, 0);
   });
 
   it("GET /api/v1/users/me includes lifetime and current-year donation totals", async () => {
