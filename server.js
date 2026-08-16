@@ -4,6 +4,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./config/db");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpecs = require("./config/swagger");
 const studentRoutes = require("./routes/studentRoutes");
 const teacherRoutes = require("./routes/teacherRoutes");
 const authRoutes = require("./routes/authRoutes");
@@ -36,6 +38,13 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/history", historyRoutes);
 app.use("/api/v1/expenses", expenseRoutes);
 app.use("/api/v1/donations", donationRoutes);
+
+// Swagger docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.get("/api-docs.json", (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.send(swaggerSpecs);
+});
 
 // 404 + error handling (must be registered last)
 app.use(notFound);

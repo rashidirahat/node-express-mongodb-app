@@ -74,6 +74,12 @@ const teacherSchema = new mongoose.Schema(
     subjects: {
       type: [subjectSchema],
       default: []
+    },
+
+    students: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Student",
+      default: []
     }
   },
   {

@@ -12,6 +12,18 @@
       "sourceType": "github",
       "skillPath": "skills/mongodb-connection/SKILL.md",
       "computedHash": "4de460cbe6ec5f6582ffd5eddbef4bdb6e22bc8befcc09554d02898f709f3429"
+    },
+    "swagger-api-query": {
+      "source": "zhihuihu/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/swagger-api-query/SKILL.md",
+      "computedHash": "c697a9cfc2eaa778eb0d5becf6cb0c74683fb1fb9873b1c85168d5ce248e8e37"
+    },
+    "swagger-doc-creator": {
+      "source": "jeremylongshore/claude-code-plugins-plus-skills",
+      "sourceType": "github",
+      "skillPath": "skills/15-api-development/swagger-doc-creator/SKILL.md",
+      "computedHash": "1247f01881560bc464aad7cb6612aded95062c15411e3f73c9985aac53efc7e3"
     }
   }
 }
